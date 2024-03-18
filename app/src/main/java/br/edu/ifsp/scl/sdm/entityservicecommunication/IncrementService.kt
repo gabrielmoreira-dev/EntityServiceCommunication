@@ -13,19 +13,22 @@ class IncrementService : Service() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             msg.data.getInt("VALUE").also {
-                InterEntityCommunication.value.postValue(it + 1)
+                Intent("INCREMENT_VALUE_ACTION").apply {
+                    putExtra("VALUE", it + 1)
+                    sendBroadcast(this)
+                }
             }
             stopSelf()
         }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        intent?.getIntExtra("VALUE", -1)?.also {
+        intent?.getIntExtra("VALUE", -1)?.also { value ->
             HandlerThread("IncrementThread").apply {
                 start()
                 IncrementHandler(looper).apply {
                     obtainMessage().apply {
-                        data.putInt("VALUE", it)
+                        data.putInt("VALUE", value)
                         sendMessage(this)
                     }
                 }
