@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         registerReceiver(
             incrementBroadcastReceiver,
-            IntentFilter("INCREMENT_VALUE_ACTION")
+            IntentFilter("INCREMENT_VALUE_ACTION"), RECEIVER_EXPORTED
         )
     }
 
